@@ -15,20 +15,18 @@ namespace JsonPrototype
         {
             Encoding encoding = System.Text.Encoding.GetEncoding("utf-8");
             User userData = new User();
-            userData.Name = "u1-0@example.com";
+            AuthenticationToken token = null;
+            HttpWebResponse response = null;
+            userData.Email = "u1-0@example.com";
             userData.Password = "letmein";
-            HttpWebRequest request = WebRequest.Create("http://trails_forward.dev.mirerca.com/users/authenticate_for_token") as HttpWebRequest;
+            HttpWebRequest request = WebRequest.Create("http://trails_forward.dev.mirerca.com/users/authenticate_for_token.json") as HttpWebRequest;
             request.ContentType = "application/json; charset=utf-8";
             request.Method = "post";
             Stream jsonStream = request.GetRequestStream();
-            Console.WriteLine(userData.ToString());
             DataContractJsonSerializer jsonSerial = new DataContractJsonSerializer(typeof(User));
             jsonSerial.WriteObject(jsonStream, userData);
             jsonStream.Flush();
-            //jsonStream.Close();
-            
-            HttpWebResponse response = null;
-            StreamReader readStream = null;
+            jsonStream.Close();
             
             try
             {
@@ -40,6 +38,12 @@ namespace JsonPrototype
             }
             
             Stream recStream = response.GetResponseStream();
+            DataContractJsonSerializer authSerial = new DataContractJsonSerializer(typeof(AuthenticationToken));
+            token = authSerial.ReadObject(recStream) as AuthenticationToken;
+            Console.WriteLine(token.ID);
+            Console.WriteLine(token.AuthToken);
+            /*
+            readStream = new StreamReader(recStream);
             
             Char[] read = new Char[256];
             int count = readStream.Read(read, 0, 256);
@@ -49,6 +53,7 @@ namespace JsonPrototype
                 Console.Write(str);
                 count = readStream.Read(read, 0, 256);
             }
+             */
             response.Close();
         }
     }

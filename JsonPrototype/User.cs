@@ -6,20 +6,18 @@ using System.Runtime.Serialization;
 
 namespace JsonPrototype
 {
-    [DataContract]
+    [DataContract(Name="user")]
     public class User
     {
-        [DataMember]
-        internal string fullName = "user";
-        [DataMember]
-        private string name;
-        [DataMember]
+        [DataMember(Name="email",Order=0)]
+        private string email;
+        [DataMember(Name="password",Order=1)]
         private string password;
 
-        public string Name
+        public string Email
         {
-            get { return Name; }
-            set { name = value; }
+            get { return email; }
+            set { email = value; }
         }
 
         public string Password
