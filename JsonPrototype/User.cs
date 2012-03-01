@@ -9,10 +9,11 @@ namespace JsonPrototype
     [DataContract(Name="user")]
     public class User
     {
-        [DataMember(Name="email",Order=0)]
+        [DataMember(Name="email")]
         private string email;
-        [DataMember(Name="password",Order=1)]
+        [DataMember(Name="password")]
         private string password;
+        AuthenticationToken token;
 
         public string Email
         {
@@ -24,6 +25,24 @@ namespace JsonPrototype
         {
             get { return password; }
             set { password = value; }
+        }
+
+        public int ID
+        {
+            get { return token.ID; }
+            set { token.ID = value; }
+        }
+
+        public string AuthToken
+        {
+            get { return token.AuthToken; }
+            set { token.AuthToken = value; }
+        }
+
+        public AuthenticationToken Token
+        {
+            get { return token; }
+            set { token = value; }
         }
     }
 }
